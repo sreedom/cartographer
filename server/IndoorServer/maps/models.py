@@ -2,12 +2,15 @@ from django.db import models
 from djangotoolbox.fields import EmbeddedModelField, ListField, SetField
 from django_mongodb_engine.fields import GridFSField
 import json
+from django_mongodb_engine.contrib import MongoDBManager
+
 # Create your models here.
 #models for maps and so forth.
 
 class Map(models.Model):
     name = models.CharField(max_length=50)
     floors = ListField(EmbeddedModelField('Floor'))
+    objects = MongoDBManager()
     def __unicode__(self):
         json.dumps(self.__dict__)
 

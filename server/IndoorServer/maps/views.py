@@ -2,6 +2,10 @@ from django.views.generic import TemplateView, CreateView
 from maps.models import Map
 from django.http.response import HttpResponse
 import json
+from mongo_models import create_gridfs
+from django.core.urlresolvers import reverse
+import tempfile
+
 # Create your views here.
 
 class NewMapView(TemplateView):
@@ -15,25 +19,28 @@ def save_map(request, map_id):
         image = request.FILES['image']
     pass
 
-def filter_by_meta(qset, key,value):
-    return qset
+
+def download_image(request, image_id):
+    all_maps = Map.objects.all()
+    for m in all_maps:
+        for f in m.floors:
+            if str(f.img._id) == image_id:
+                image = f.img
+    return HttpResponse(image.read(), content_type="image/jpg")
 
 
-def serialize_clusters(cluster_obj):
-    cluster_obj.topLeft = {'x':cluster_obj.topLeft.x,
-                           'y': cluster_obj.topLeft.y}
-    cluster_obj.bottomRight = {'x':cluster_obj.bottomRight.x,
-                           'y': cluster_obj.bottomRight.y}
+def upload_file(request):
+    f = request.FILES['file']
+    id = create_gridfs(f)
+    url = request.build_absolute_uri (
+        reverse(download_image, args=(str(id), )))
 
-def serialize_floors(floor_obj):
-    floor_obj.clusters = map(serialize_clusters, floor_obj.clusters)
-    return floor_obj
+def save_map(request):
+    pass
 
-def serialize_map(map_obj):
-    #serialize all floors
-    map_obj.floors = map(serialize_floors, map_obj.floors)
-    return map_obj
-
+def filter_by_meta(qset, k, v):
+    #return all maps for which meta.k == v
+    pass
 
 def search_maps(request):
     filters = request.GET

@@ -34,6 +34,7 @@ def upload_file(request):
     id = create_gridfs(f)
     url = request.build_absolute_uri (
         reverse(download_image, args=(str(id), )))
+    #render html file
 
 def save_map(request):
     pass

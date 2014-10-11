@@ -11,29 +11,21 @@ class Map(models.Model):
     name = models.CharField(max_length=50)
     floors = ListField(EmbeddedModelField('Floor'))
     objects = MongoDBManager()
-    def __unicode__(self):
-        json.dumps(self.__dict__)
 
 class Floor(models.Model):
     floor_name = models.CharField(max_length=50)
     #img = models.FileField(storage=GridFSStorage, upload_to='/')
     img = GridFSField()
     clusters = ListField(EmbeddedModelField('Cluster'))
-    def __unicode__(self):
-        json.dumps(self.__dict__)
 
 class Cluster(models.Model):
     topLeft = EmbeddedModelField('Pos')
     bottomRight = EmbeddedModelField('Pos')
     tags = SetField()
-    def __unicode__(self):
-        json.dumps(self.__dict__)
 
 class Pos(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
-    def __unicode__(self):
-        json.dumps(self.__dict__)
 
 
 img = '/Users/sreeraj.a/projects/InNavi/server/resources/bkimg.jpg'

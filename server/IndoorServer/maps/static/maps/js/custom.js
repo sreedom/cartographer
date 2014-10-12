@@ -9,7 +9,8 @@ $(function(){
 
 var clusters = [];
 var paths = [];
-var mapID = "5438412e9a99af735cdc62e9";
+//var mapID = "5438412e9a99af735cdc62e9";
+var mapID = "5439e9789a99af8cdfba8c9b";
 var mapName = "InMobi Campus";
 var floor = new Object();
 var imgURI = "";
@@ -203,9 +204,17 @@ function addCluster(){
 	$('#inpopup').remove();
 }
 
-function finalize(){
+function populateFinalData(){
 	floor.clusters = clusters;
 	floor.path = paths;
+	$('#mapname').html(mapName+' ['+mapID+']');
+	$('#floorname').html(floor.name);
+	$('#clustercount').html(floor.clusters.length);
+	$('#pathcount').html(floor.path.length);
+	$("#floorimg").attr('src', floor.url);
+}
+
+function finalize(){
 	// SEND data to server //
 	console.log(JSON.stringify(floor));
 	var BASE_URL = "http://localhost:9090/maps/update-map/";
@@ -215,6 +224,10 @@ function finalize(){
 	  type: "POST",
 	  url: url,
 	  data: data,
+	  success: function(data){
+	    alert('Floor ' + floor.name + ' is uploaded to ' + mapName);
+	    initView();
+	  }
 	});
 	
 
@@ -259,6 +272,7 @@ form.onsubmit = function (event) {
       var obj = JSON.parse(xhr.responseText);
       floor.image = obj.id;
       floor.url = obj.url;
+      floor.img_id = obj.id;
       uploadButton.innerHTML = 'Upload';
       switchSelect(2,3);
     } else {
@@ -281,8 +295,25 @@ form.onsubmit = function (event) {
 function switchSelect(from,to){
 	hide(from);
 	select(to);
+	if(to == 2) {
+
+	  $.ajax({
+	    type: "GET",
+	    url: "http://localhost:9090/maps/detail/" + mapID,
+	    success: function(data){
+	      data.floors.forEach(function(obj){
+		var numPaths,numClusters,floorName,tags;
+		if(typeof obj.path != 'undefined') numPaths = obj.path.length; else numPaths = '0';
+		if(typeof obj.clusters != 'undefined') numClusters = obj.clusters.length; else numClusters = '0';
+		if(typeof obj.floor_name != 'undefined') floorName = obj.floor_name; else floorName = '-';
+		$('#floorList').append('<tr><td>'+floorName+'</td><td>'+numClusters+'</td><td>'+numPaths+'</td></tr>');
+	      });
+	    }
+	  });
+
+	}
 	if(from == 2){
-		floor.name = $('#floorNum').val();
+		floor.floor_name = $('#floorNum').val();
 	}
 	if(to == 3 || to == 4){
 		$('#canvas-div').show();
@@ -290,6 +321,9 @@ function switchSelect(from,to){
 		loadMap();
 	} else {
 		$('#canvas-div').hide();
+	}
+	if(to == 5){
+		populateFinalData();
 	}
 }
 function initView(){

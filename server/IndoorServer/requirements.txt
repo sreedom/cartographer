@@ -1,0 +1,8 @@
+Django==1.5
+django-mongodb-engine==0.5.2
+djangotoolbox==1.6.2
+gnureadline==6.3.3
+ipdb==0.8
+ipython==2.3.0
+pymongo==2.7.2
+wsgiref==0.1.2

@@ -38,7 +38,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">The Silent Cartographer</a>
+          <a class="navbar-brand" href="">The Silent Cartographer</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -55,7 +55,6 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li><a href="index.html">Overview</a></li>
             <li class="active"><a href="#">Add Map</a></li>
           </ul>
         </div>
@@ -102,28 +101,12 @@
                           <table class="table table-striped">
                             <thead>
                               <tr>
-                                <th>#</th>
-                                <th>Header</th>
-                                <th>Header</th>
-                                <th>Header</th>
-                                <th>Header</th>
+                                <th>Floor</th>
+                                <th>#Clusters</th>
+                                <th>#Paths</th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr class="active">
-                                <td>1,001</td>
-                                <td>Lorem</td>
-                                <td>ipsum</td>
-                                <td>dolor</td>
-                                <td>sit</td>
-                              </tr>
-                              <tr>
-                                <td>1,002</td>
-                                <td>amet</td>
-                                <td>consectetur</td>
-                                <td>adipiscing</td>
-                                <td>elit</td>
-                              </tr>
+                            <tbody id="floorList">
                             </tbody>
                           </table>
                         </div>
@@ -172,6 +155,28 @@
                     <h2 class="sub-header">5. Finalize 
                       <button class="btn btn-primary pull-right" onclick="finalize()">Push data to Server</button>
                     </h2>
+                    <div class="row">
+                      <div class="col-lg-2">Map </div>
+                      <div class="col-lg-10" id="mapname">MapName [MapID] </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2">Floor </div>
+                      <div class="col-lg-10" id="floorname">FloorName </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2">Clusters Added </div>
+                      <div class="col-lg-10" id="clustercount">clustercount </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2">Paths Added </div>
+                      <div class="col-lg-10" id="pathcount">pathCount </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2">Floor Plan </div>
+                      <div class="col-lg-10">
+                        <img id="floorimg" src="http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg" width=100%>
+                      </div>
+                    </div>
           </div>
           <div id="canvas-div">
                     <div class="row" >

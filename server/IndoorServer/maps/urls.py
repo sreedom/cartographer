@@ -12,6 +12,8 @@ urlpatterns = patterns('',
                        url(r'^upload-image/$', views.upload_file, name="maps.upload"),
                        url(r'^image/(?P<image_id>.*)/$', views.download_image, name="maps.download"),
                        url(r'^update-map/(?P<map_id>.*)$', views.update_map, name="maps.update"),
+                       url(r'^detail/(?P<map_id>.*)$', views.download_map, name="maps.detail"),
+
 
 
 )

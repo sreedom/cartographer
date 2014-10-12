@@ -39,7 +39,7 @@ def download_image(request, image_id):
 
 def download_map(request, map_id):
     collection = db.maps_map
-    _map = collection.find_one({'_id':str(map_id)})
+    _map = collection.find_one({'_id':ObjectId(map_id)})
     if not _map:
         raise Http404
     else:
@@ -61,8 +61,9 @@ def save_map(request):
     '''
     pass
 
+
+
 def update_map(request, map_id):
-    import pdb; pdb.set_trace()  # XXX BREAKPOINT
     collection = db.maps_map
     floor_data = loads(request.POST.get('floor_data'))
     resp = collection.update({'_id':ObjectId(map_id)},

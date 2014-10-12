@@ -2,7 +2,7 @@ from django.views.generic import TemplateView, CreateView
 from maps.models import Map
 from django.http.response import HttpResponse, Http404
 import json
-from mongo_models import create_gridfs
+from mongo_models import create_gridfs, get_file
 from django.core.urlresolvers import reverse
 import tempfile
 import pymongo
@@ -31,9 +31,9 @@ def download_image(request, image_id):
         image = get_file(db, image_id)
     except:
         image = None
+
     if image:
         return HttpResponse(image.read(), content_type="image/jpg")
-
     else:
         raise Http404("nothing to see here. move on")
 
@@ -46,12 +46,13 @@ def download_map(request, map_id):
         return HttpResponse(dumps(_map), mimetype='application/json')
 
 def upload_file(request):
+    #import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
     f = request.FILES['file']
-    id = create_gridfs(f)
+    id = create_gridfs(f,f.name,db)
     url = request.build_absolute_uri (
         reverse(download_image, args=(str(id), )))
     #render html file
-    result = {'url':url}
+    result = {'url':url, 'id':str(id)}
     return HttpResponse(json.dumps(result), mimetype='application/json')
 
 def save_map(request):
@@ -61,6 +62,7 @@ def save_map(request):
     pass
 
 def update_map(request, map_id):
+    import pdb; pdb.set_trace()  # XXX BREAKPOINT
     collection = db.maps_map
     floor_data = loads(request.POST.get('floor_data'))
     resp = collection.update({'_id':ObjectId(map_id)},
